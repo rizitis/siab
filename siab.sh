@@ -28,14 +28,23 @@ echo "ROOT ACCESS PLEASE OR GO HOME..."
 exit 1
 fi
 
-set -e
 
+# autoslack-initrd dir
 dir=/usr/local/autoslack-initrd
 file=/usr/local/autoslack-initrd/autoslack-initrd.TXT
 file2=/usr/local/autoslack-initrd/autoslack-initrd.BAK
 file3=/usr/local/autoslack-initrd/autoslack-initrd
+# slackup-grub dir
+dirg=/usr/local/slackup-grub
+fileg=/usr/local/slackup-grub/slackup-grub.TXT
+fileg2=/usr/local/slackup-grub/slackup-grub.BAK
+# auto-elilo then mkdir
+direl=/usr/local/auto-elilo
+fileel=/usr/local/auto-elilo/auto-elilo.TXT
+fileel2=/usr/local/auto-elilo/auto-elilo.BAK
 
-# if first time run mk autoslack-initrd dir
+set -e
+
 if [ -d "$dir" ]
 then
 echo "autoslack-initrd is installed"
@@ -43,6 +52,12 @@ else
 mkdir -p "$dir" || exit 
 /bin/ls -tr /var/lib/pkgtools/packages | grep kernel | tail -2 > "$file"
 echo "Looks like you are running autoslack-initrd for first time?"
+mkdir -p "$dirg"
+/bin/ls -tr /var/log/pkgtools/removed_scripts/ | grep kernel | tail -4 > "$fileg"
+echo "Looks like you are running slackup-grub for first time?"
+mkdir -p "$direl"
+/bin/ls -tr /var/log/pkgtools/removed_scripts/ | grep kernel | tail -4 > "$fileel"
+echo "Looks like you are running auto-elilo for first time?"
 exit
 fi
 
@@ -103,16 +118,12 @@ BOOT_CURRENT=$(efibootmgr -v | grep "BootCurrent" | awk '{print $2}')
 # Apply logic based on the bootloader ID
 case $BOOT_CURRENT in
     "0000")
-# if first time run mk slackup-grub dir
-dirg=/usr/local/slackup-grub
-fileg=/usr/local/slackup-grub/slackup-grub.TXT
-fileg2=/usr/local/slackup-grub/slackup-grub.BAK
 echo "GRUB is the current bootloader."
 if [ -d "$dirg" ]
 then
 echo "slackup-grub is installed"
 else
-mkdir -p "$dir"
+mkdir -p "$dirg"
 /bin/ls -tr /var/log/pkgtools/removed_scripts/ | grep kernel | tail -4 > "$fileg"
 echo "Looks like you are running slackup-grub for first time?"
 exit
@@ -147,10 +158,6 @@ fi
 # ELILO
  ;;
     "0002")
-# if first time run auto-elilo then mkdir
-direl=/usr/local/auto-elilo
-fileel=/usr/local/auto-elilo/auto-elilo.TXT
-fileel2=/usr/local/auto-elilo/auto-elilo.BAK
 echo "ELILO is the current bootloader."
 if [ -d "$direl" ]
 then
