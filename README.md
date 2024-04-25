@@ -45,4 +45,4 @@ fi
 `/etc/rc.d/siab.sh`
 
 Manuall is only onces after the first installation.  
-This way siab will create the database needed. After that it will auto-run in every shoutdown-reboot and do what it have to do, if needed. 
+This way siab will create the database needed. After that it will auto-run in every shutdown-reboot and do what it have to do, if needed. 
