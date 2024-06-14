@@ -71,7 +71,7 @@ else
 echo "************************************"
 echo "Something went wrong, ATTENSION... *"
 echo "************************************"
-exit
+exit 2
 fi
 
 
@@ -138,7 +138,7 @@ else
 echo "************************************"
 echo "Something went wrong, ATTENSION... *"
 echo "************************************"
-exit
+exit 3
 fi
 
 set -e
@@ -178,7 +178,7 @@ else
 echo "************************************"
 echo "Something went wrong, ATTENSION... *"
 echo "************************************"
-exit
+exit 4
 fi
 
 set -e
