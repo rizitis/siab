@@ -34,10 +34,13 @@ dir=/usr/local/autoslack-initrd
 file=/usr/local/autoslack-initrd/autoslack-initrd.TXT
 file2=/usr/local/autoslack-initrd/autoslack-initrd.BAK
 file3=/usr/local/autoslack-initrd/autoslack-initrd
-# slackup-grub dir
+# slackup-grub dir and grub-install
 dirg=/usr/local/slackup-grub
 fileg=/usr/local/slackup-grub/slackup-grub.TXT
 fileg2=/usr/local/slackup-grub/slackup-grub.BAK
+dirgg=/usr/local/slackgrub-install
+filegg=/usr/local/slackgrub-install/slackgrub-install.TXT
+filegg2=/usr/local/slackgrub-install/slackgrub-install.BAK
 # auto-elilo then mkdir
 direl=/usr/local/auto-elilo
 fileel=/usr/local/auto-elilo/auto-elilo.TXT
@@ -47,18 +50,47 @@ set -e
 
 if [ -d "$dir" ]
 then
-echo "autoslack-initrd is installed"
+echo "SIAB is installed"
 else
 mkdir -p "$dir" || exit 
 /bin/ls -tr /var/lib/pkgtools/packages | grep kernel | tail -2 > "$file"
 echo "Looks like you are running autoslack-initrd for first time?"
 mkdir -p "$dirg"
 /bin/ls -tr /var/log/pkgtools/removed_scripts/ | grep kernel | tail -4 > "$fileg"
-echo "Looks like you are running slackup-grub for first time?"
+mkdir -p "$dirgg"
+ls /var/adm/packages/ | grep ^grub > "$filegg"
+echo "Looks like you are running slackup-grub and slackgrub-install for first time?"
 mkdir -p "$direl"
 /bin/ls -tr /var/log/pkgtools/removed_scripts/ | grep kernel | tail -4 > "$fileel"
 echo "Looks like you are running auto-elilo for first time?"
 exit
+fi
+
+cd "$dirgg" || exit
+if [ -f /usr/local/slackgrub-install/slackgrub-install.TXT ]
+then 
+mv "$filegg" "$filegg2" || exit
+else 
+echo "************************************"
+echo "Something went wrong, grub-install ATTENSION... *"
+echo "************************************"
+exit 3
+fi
+
+set -e
+
+if [ -f "$filegg2" ]
+then 
+ls /var/adm/packages/ | grep ^grub > "$filegg"
+fi
+if cmp -s slackgrub-install.TXT slackgrub-install.BAK ; then
+echo "NO GRUB UPDATE WAS FOUND"
+sleep 1
+else
+echo "GRUB WAS UPDATED, REINSTALL-UPDATING GRUB..."
+grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=grub --recheck #--debug
+wait
+grub-mkconfig -o /boot/grub/grub.cfg
 fi
 
 cd "$dir" || exit
