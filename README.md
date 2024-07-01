@@ -13,7 +13,7 @@
 
 *Slackware Initrd And Bootloader (siab) is a merge of 4 projects.<br>
 [autoslack-initrd](https://github.com/rizitis/autoslack-initrd/tree/main) , [slackup-grub](https://github.com/rizitis/slackup-grub) , [auto-elilo](https://github.com/rizitis/auto-elilo/tree/main)
-and auto grub-install if Grub version uptated from Slackware64 (slackpkg).<br>
+and **auto grub-install** (if Grub version uptated from Slackware64 (slackpkg).)<br>
  You can use it **ONLY** on UEFI Slackware64 systems.*
 
 
