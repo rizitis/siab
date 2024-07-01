@@ -28,10 +28,10 @@ During shutdown script check if slackpkg upgraded your linux kernel or bootloade
 
 ### Install
 
-1. Download siab.sh from here and place it in `/etc/rc.d/`
+1. Download siab.sh from [here](https://raw.githubusercontent.com/rizitis/siab/main/siab.sh) and place it in `/etc/rc.d/`
 2. `chmod +x /etc/rc.d/siab.sh`
 3. Edit or create if not exist a file `/etc/rc.d/rc.local_shutdown`
-4. Add in this file:  
+4. Add in this file in:  
  
  ``` 
  # siab
@@ -43,7 +43,7 @@ fi
 
 5. Now you must run as root siab.sh manually for first time:
 
-`chmod +x /etc/rc.d/siab.sh && /etc/rc.d/siab.sh`
+`/etc/rc.d/siab.sh`
 
 Manually is only onces after the first installation.  
 This way siab will create the database needed. After that it will auto-run in every shutdown-reboot and do what it have to do, if needed. 
